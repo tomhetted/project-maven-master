@@ -74,6 +74,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- jar config -->
@@ -85,7 +94,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>${basedir}/lib</classpathPrefix>
+                            <classpathPrefix>/lib</classpathPrefix>
                             <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
                         </manifest>
                         <manifestEntries>
@@ -110,23 +119,22 @@
                 </configuration>
             </plugin>
 
-            <!-- trying to add resources with plugin (not working)
+            <!-- still not working
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <phase>validate</phase>
+                        <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>
-                                ${basedir}/target/lib
-                            </outputDirectory>
+                            <outputDirectory>${basedir}/target/lib</outputDirectory>
+                            <encoding>UTF-8</encoding>
                             <resources>
-                                <resource>${basedir}/lib</resource>
+                                <resource>${basedir}/lib/</resource>
                             </resources>
                         </configuration>
                     </execution>
@@ -143,10 +151,6 @@
                     <excludes>**/StrangeTest.java</excludes>
                 </configuration>
             </plugin>
-
-
-
-
 
         </plugins>
     </build>
