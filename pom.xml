@@ -44,7 +44,7 @@
     <build>
         <resources>
             <resource>
-                <directory>${basedir}/lib</directory>
+                <directory>${project.build.directory}/classes/lib</directory>
             </resource>
         </resources>
         <plugins>
@@ -69,15 +69,32 @@
                 </configuration>
             </plugin>
 
+            <!-- Installing lib to local repo -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <groupId>com.javarush</groupId>
+                    <artifactId>desktop-game-engine</artifactId>
+                    <version>1.0</version>
+                    <packaging>jar</packaging>
+                    <file>${basedir}/lib/desktop-game-engine.jar</file>
+                    <generatePom>true</generatePom>
+                </configuration>
+            </plugin>
+
             <!-- Copying dependencies -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.5.0</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
+                </configuration>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
@@ -98,40 +115,25 @@
                             <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Rsrs-Main-Class>com.javarush.games.racer.RacerGame</Rsrs-Main-Class>
+                            <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
 
-            <!-- Installing lib to local repo -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <groupId>com.javarush</groupId>
-                    <artifactId>desktop-game-engine</artifactId>
-                    <version>1.0</version>
-                    <packaging>jar</packaging>
-                    <file>${basedir}/lib/desktop-game-engine.jar</file>
-                    <generatePom>true</generatePom>
-                </configuration>
-            </plugin>
-
-            <!-- still not working
+            <!-- Still not working...
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
-                        <phase>generate-resources</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${basedir}/target/lib</outputDirectory>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
                             <encoding>UTF-8</encoding>
                             <resources>
                                 <resource>${basedir}/lib/</resource>
