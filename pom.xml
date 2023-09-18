@@ -44,7 +44,7 @@
     <build>
         <resources>
             <resource>
-                <directory>${project.build.directory}/classes/lib</directory>
+                <directory>${project.build.directory}/classes/</directory>
             </resource>
         </resources>
         <plugins>
